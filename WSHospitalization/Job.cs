@@ -10,22 +10,27 @@ namespace WSHospitalization
 {
     class JobHospital : IJob
     {
-
-
         public Task Execute(IJobExecutionContext context)
         {
             return Task.Run(() =>
             {
-                string apServer, apDatabase;
+                try
+                {
+                    string apServer, apDatabase;
 
-                apServer = System.Configuration.ConfigurationManager.AppSettings["ServerName"];
-                apDatabase = System.Configuration.ConfigurationManager.AppSettings["BaseName"];
+                    apServer = System.Configuration.ConfigurationManager.AppSettings["ServerName"];
+                    apDatabase = System.Configuration.ConfigurationManager.AppSettings["BaseName"];
 
-                DBSqlServer _sql = new DBSqlServer(apServer, apDatabase, null, "");
-                _sql.Connect("sa", "sasa", false);
+                    DBSqlServer _sql = new DBSqlServer(apServer, apDatabase, null, "");
+                    _sql.Connect("sa", "sasa", false);
 
-                getKDInformation(_sql);
-                getPlanHospitalization(_sql);
+                    getKDInformation(_sql);
+                    getPlanHospitalization(_sql);
+                }
+                catch
+                {
+                    
+                }                
             });
         }
 
