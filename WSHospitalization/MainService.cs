@@ -15,15 +15,6 @@ namespace WSHospitalization
         public MainService()
         {
             InitializeComponent();
-
-            eventLog1 = new System.Diagnostics.EventLog();
-            if (!System.Diagnostics.EventLog.SourceExists("WSHospitalizationS"))
-            {
-                System.Diagnostics.EventLog.CreateEventSource(
-                    "WSHospitalizationS", "LogHospit");
-            }
-            eventLog1.Source = "WSHospitalizationS";
-            eventLog1.Log = "LogHospit";
         }
 
         internal void TestStartupAndStop(string[] args)
@@ -36,14 +27,13 @@ namespace WSHospitalization
 
         protected override void OnStart(string[] args)
         {
-            eventLog1.WriteEntry("In OnStart");
-
+            Log.Write("запуск");
             Sheduler.Start();
         }
 
         protected override void OnStop()
         {
-            eventLog1.WriteEntry("In OnStop");
+            Log.Write("остановка");
         }
     }
 }

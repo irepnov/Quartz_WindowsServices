@@ -2,9 +2,11 @@
 using Quartz;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WSHospitalization
 {
@@ -17,7 +19,6 @@ namespace WSHospitalization
                 try
                 {
                     string apServer, apDatabase;
-
                     apServer = System.Configuration.ConfigurationManager.AppSettings["ServerName"];
                     apDatabase = System.Configuration.ConfigurationManager.AppSettings["BaseName"];
 
@@ -27,9 +28,9 @@ namespace WSHospitalization
                     getKDInformation(_sql);
                     getPlanHospitalization(_sql);
                 }
-                catch
+                catch(Exception ee)
                 {
-                    
+                    Log.Write(ee.Message); 
                 }                
             });
         }
@@ -40,18 +41,19 @@ namespace WSHospitalization
 
             try
             {
-               /* sql.SQLScript = "select id from packages where PackageType = 2 and DATEADD(day, 0, DATEDIFF(day, 0, CreateDate)) = @date";
+                sql.SQLScript = "select id from packages where PackageType = 2 and DATEADD(day, 0, DATEDIFF(day, 0, CreateDate)) = @date";
                 sql.AddParameter("@date", EnumDBDataTypes.EDT_DateTime, DateTime.Now.ToShortDateString());
                 if (sql.ExecuteScalar() != null)
-                    return true;*/
+                    return true;
 
                 sql.SQLScript = "insert into packages(PackageType, CreateDate) values(2, getdate())";
                 sql.ExecuteNonQuery();
                 res = true;
             }
-            catch
+            catch (Exception ee)
             {
                 res = false;
+                Log.Write("getPlanHospitalization " + ee.Message);
             }
 
             return res;
@@ -72,9 +74,10 @@ namespace WSHospitalization
                 sql.ExecuteNonQuery();
                 res = true;
             }
-            catch
+            catch (Exception ee)
             {
                 res = false;
+                Log.Write("getKDInformation " + ee.Message);
             }
 
             return res;
